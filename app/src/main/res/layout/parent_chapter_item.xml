@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    android:background="#86b2f9">
+    android:background="#86b2f9"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_group"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/indicator_group"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tv_parent_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        tools:text = "@string/android"
+        android:textSize="24sp"
+        android:layout_marginStart="10dp"
         android:textStyle="bold"
-        android:textSize="24sp"/>
+        tools:text="@string/android" />
 
 </LinearLayout>

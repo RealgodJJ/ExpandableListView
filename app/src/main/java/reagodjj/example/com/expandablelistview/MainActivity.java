@@ -2,6 +2,8 @@ package reagodjj.example.com.expandablelistview;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
@@ -26,5 +28,44 @@ public class MainActivity extends AppCompatActivity {
 
         chapterAdapter = new ChapterAdapter(this, chapters);
         elvLanguage.setAdapter(chapterAdapter);
+
+        initEvents();
+    }
+
+    private void initEvents() {
+        elvLanguage.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                return false;
+            }
+        });
+
+        elvLanguage.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                return false;
+            }
+        });
+
+        elvLanguage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+
+        elvLanguage.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+
+            }
+        });
+
+        elvLanguage.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+
+            }
+        });
     }
 }

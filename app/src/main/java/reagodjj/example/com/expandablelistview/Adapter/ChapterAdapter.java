@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -69,6 +70,8 @@ public class ChapterAdapter extends BaseExpandableListAdapter {
         }
 
         parentViewHolder.tvParentItem.setText(chapters.get(groupPosition).getName());
+        parentViewHolder.ivGroup.setImageResource(R.drawable.indicator_group);
+        parentViewHolder.ivGroup.setSelected(isExpanded);
         return convertView;
     }
 
@@ -94,9 +97,11 @@ public class ChapterAdapter extends BaseExpandableListAdapter {
 
     public static class ParentViewHolder {
         TextView tvParentItem;
+        ImageView ivGroup;
 
         ParentViewHolder(View view) {
             tvParentItem = view.findViewById(R.id.tv_parent_item);
+            ivGroup = view.findViewById(R.id.iv_group);
         }
     }
 
