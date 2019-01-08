@@ -9,14 +9,16 @@ import android.widget.ExpandableListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import reagodjj.example.com.expandablelistview.Adapter.ChapterAdapter;
+import reagodjj.example.com.expandablelistview.adapter.ChapterAdapter;
 import reagodjj.example.com.expandablelistview.bean.Chapter;
 import reagodjj.example.com.expandablelistview.bean.ChapterLab;
+import reagodjj.example.com.expandablelistview.biz.ChapterBiz;
 
 public class MainActivity extends AppCompatActivity {
     private ExpandableListView elvLanguage;
     private ChapterAdapter chapterAdapter;
     private List<Chapter> chapters = new ArrayList<>();
+    private ChapterBiz chapterBiz = new ChapterBiz();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +26,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         elvLanguage = findViewById(R.id.elv_language);
-        chapters.addAll(ChapterLab.generateDatas());
+//        chapters.addAll(ChapterLab.generateDatas());
 
         chapterAdapter = new ChapterAdapter(this, chapters);
         elvLanguage.setAdapter(chapterAdapter);
-
         initEvents();
+
+        chapterBiz.loadDatas(this, new ChapterBiz.CallBack() {
+            @Override
+            public void loadSuccess(List<Chapter> chapterList) {
+                chapters.addAll(chapterList);
+            }
+
+            @Override
+            public void loadFailed(Exception ex) {
+                ex.printStackTrace();
+            }
+        }, false);
     }
 
     private void initEvents() {

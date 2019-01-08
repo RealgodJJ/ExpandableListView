@@ -33,22 +33,22 @@ public class Chapter {
         return chapterItems;
     }
 
-    public void addChild(ChapterItem child) {
-        chapterItems.add(child);
-        child.setPid(getId());
-    }
-
-    public void addChild(int id, String childName) {
-        ChapterItem chapterItem = new ChapterItem(id, childName);
-        chapterItem.setPid(getId());
-        chapterItems.add(chapterItem);
-    }
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void addChild(ChapterItem childChapterItem) {
+        chapterItems.add(childChapterItem);
+        childChapterItem.setPid(getId());
+    }
+
+    void addChild(int childId, String childName) {
+        ChapterItem chapterItem = new ChapterItem(childId, childName);
+        chapterItem.setPid(getId());
+        chapterItems.add(chapterItem);
     }
 }

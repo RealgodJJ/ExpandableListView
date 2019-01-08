@@ -1,7 +1,6 @@
-package reagodjj.example.com.expandablelistview.Adapter;
+package reagodjj.example.com.expandablelistview.adapter;
 
 import android.content.Context;
-import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
