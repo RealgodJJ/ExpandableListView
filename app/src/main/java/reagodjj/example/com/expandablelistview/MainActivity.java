@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void loadSuccess(List<Chapter> chapterList) {
                 chapters.addAll(chapterList);
+                chapterAdapter.notifyDataSetChanged();
             }
 
             @Override
