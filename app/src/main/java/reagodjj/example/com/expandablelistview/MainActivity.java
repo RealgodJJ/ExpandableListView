@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import reagodjj.example.com.expandablelistview.biz.ChapterBiz;
 
 public class MainActivity extends AppCompatActivity {
     private ExpandableListView elvLanguage;
+    private Button btRefresh;
     private ChapterAdapter chapterAdapter;
     private List<Chapter> chapters = new ArrayList<>();
     private ChapterBiz chapterBiz = new ChapterBiz();
@@ -26,27 +28,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         elvLanguage = findViewById(R.id.elv_language);
+        btRefresh = findViewById(R.id.bt_refresh);
 //        chapters.addAll(ChapterLab.generateDatas());
 
         chapterAdapter = new ChapterAdapter(this, chapters);
         elvLanguage.setAdapter(chapterAdapter);
         initEvents();
 
-        chapterBiz.loadDatas(this, new ChapterBiz.CallBack() {
-            @Override
-            public void loadSuccess(List<Chapter> chapterList) {
-                chapters.addAll(chapterList);
-                chapterAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void loadFailed(Exception ex) {
-                ex.printStackTrace();
-            }
-        }, false);
+        loadDatas(true);
     }
 
     private void initEvents() {
+        btRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadDatas(false);
+            }
+        });
+
         elvLanguage.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
@@ -81,5 +80,21 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void loadDatas(boolean useCache) {
+        chapterBiz.loadDatas(this, new ChapterBiz.CallBack() {
+            @Override
+            public void loadSuccess(List<Chapter> chapterList) {
+                chapters.clear();
+                chapters.addAll(chapterList);
+                chapterAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void loadFailed(Exception ex) {
+                ex.printStackTrace();
+            }
+        }, useCache);
     }
 }

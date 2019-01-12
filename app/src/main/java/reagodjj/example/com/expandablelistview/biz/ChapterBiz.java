@@ -3,6 +3,7 @@ package reagodjj.example.com.expandablelistview.biz;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import reagodjj.example.com.expandablelistview.bean.Chapter;
 import reagodjj.example.com.expandablelistview.bean.ChapterItem;
+import reagodjj.example.com.expandablelistview.dao.ChapterDao;
 import reagodjj.example.com.expandablelistview.utils.HttpUtils;
 
 public class ChapterBiz {
@@ -35,15 +37,21 @@ public class ChapterBiz {
 
                 try {
                     boolean isUseCache = booleans[0];
-
+                    ChapterDao chapterDao = new ChapterDao();
                     if (isUseCache) {
-                        //TODO:load datas from database
+                        //load datas from database
+                        List<Chapter> chapterFromDb = chapterDao.loadFromDb(context);
+                        chapters.addAll(chapterFromDb);
+                        Log.d("zhy", "loadFromDb -> " + chapters);
                     }
 
                     if (chapters.isEmpty()) {
-                        //TODO:load from net
-                        List<Chapter> chapterListFromNet = loadFromNet(context);
+                        //load from net
+                        List<Chapter> chapterListFromNet = loadFromNet();
                         chapters.addAll(chapterListFromNet);
+                        //cache into db
+                        Log.d("zhy", "loadFromNet -> " + chapterListFromNet);
+                        chapterDao.insert2Db(context, chapters);
                     }
                 } catch (final Exception e) {
                     e.printStackTrace();
@@ -72,7 +80,7 @@ public class ChapterBiz {
         void loadFailed(Exception ex);
     }
 
-    private List<Chapter> loadFromNet(Context context) {
+    private List<Chapter> loadFromNet() {
         String url = "http://www.wanandroid.com/tools/mockapi/2/mooc-expandablelistview";
         List<Chapter> chapters = new ArrayList<>();
 
