@@ -42,7 +42,7 @@ public class ChapterBiz {
                         //load datas from database
                         List<Chapter> chapterFromDb = chapterDao.loadFromDb(context);
                         chapters.addAll(chapterFromDb);
-                        Log.d("zhy", "loadFromDb -> " + chapters);
+                        Log.d("RealgodJJ", "loadFromDb -> " + chapters);
                     }
 
                     if (chapters.isEmpty()) {
@@ -50,7 +50,7 @@ public class ChapterBiz {
                         List<Chapter> chapterListFromNet = loadFromNet();
                         chapters.addAll(chapterListFromNet);
                         //cache into db
-                        Log.d("zhy", "loadFromNet -> " + chapterListFromNet);
+                        Log.d("RealgodJJ", "loadFromNet -> " + chapterListFromNet);
                         chapterDao.insert2Db(context, chapters);
                     }
                 } catch (final Exception e) {

@@ -15,31 +15,60 @@ import reagodjj.example.com.expandablelistview.db.ChapterDbHelper;
 public class ChapterDao {
     public List<Chapter> loadFromDb(Context context) {
         List<Chapter> chapterList = new ArrayList<>();
+        List<ChapterItem> chapterItemList = new ArrayList<>();
         ChapterDbHelper chapterDbHelper = ChapterDbHelper.getsInstance(context);
         SQLiteDatabase sqLiteDatabase = chapterDbHelper.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery("select * from " + Chapter.TABLE_NAME, null);
+
+//        Cursor cursor = sqLiteDatabase.rawQuery("select * from " + Chapter.TABLE_NAME, null);
+//
+//        while (cursor.moveToNext()) {
+//            int id = cursor.getInt(cursor.getColumnIndex(Chapter.COL_ID));
+//            String name = cursor.getString(cursor.getColumnIndex(Chapter.COL_NAME));
+//            Chapter chapter = new Chapter(id, name);
+//            chapterList.add(chapter);
+//        }
+//        cursor.close();
+
+//        for (Chapter chapter : chapterList) {
+//            int pid = chapter.getId();
+//            cursor = sqLiteDatabase.rawQuery("select * from " + ChapterItem.TABLE_NAME +
+//                    " where " + ChapterItem.COL_PID + " = ? ", new String[]{String.valueOf(pid)});
+//            while (cursor.moveToNext()) {
+//                int id = cursor.getInt(cursor.getColumnIndex(ChapterItem.COL_ID));
+//                String name = cursor.getString(cursor.getColumnIndex(ChapterItem.COL_NAME));
+//                ChapterItem chapterItem = new ChapterItem(id, name);
+//                chapterItem.setPid(pid);
+//                chapter.addChild(chapterItem);
+//            }
+//            cursor.close();
+//        }
+
+        //优化方式(减少查询数据库的次数，查询数据库占据较多的时间)
+        Cursor cursor = sqLiteDatabase.rawQuery("select * from " + ChapterItem.TABLE_NAME, null);
+        while (cursor.moveToNext()) {
+            int pid = cursor.getInt(cursor.getColumnIndex(ChapterItem.COL_PID));
+            int id = cursor.getInt(cursor.getColumnIndex(ChapterItem.COL_ID));
+            String name = cursor.getString(cursor.getColumnIndex(ChapterItem.COL_NAME));
+            ChapterItem chapterItem = new ChapterItem(id, name);
+            chapterItem.setPid(pid);
+            chapterItemList.add(chapterItem);
+        }
+
+        cursor = sqLiteDatabase.rawQuery("select * from " + Chapter.TABLE_NAME, null);
 
         while (cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex(Chapter.COL_ID));
             String name = cursor.getString(cursor.getColumnIndex(Chapter.COL_NAME));
             Chapter chapter = new Chapter(id, name);
+            for (ChapterItem chapterItem : chapterItemList) {
+                if (id == chapterItem.getPid()) {
+                    chapter.addChild(chapterItem);
+                }
+            }
             chapterList.add(chapter);
         }
         cursor.close();
 
-        for (Chapter chapter : chapterList) {
-            int pid = chapter.getId();
-            cursor = sqLiteDatabase.rawQuery("select * from " + ChapterItem.TABLE_NAME +
-                    " where " + ChapterItem.COL_PID + " = ? ", new String[]{String.valueOf(pid)});
-            while (cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndex(ChapterItem.COL_ID));
-                String name = cursor.getString(cursor.getColumnIndex(ChapterItem.COL_NAME));
-                ChapterItem chapterItem = new ChapterItem(id, name);
-                chapterItem.setPid(pid);
-                chapter.addChild(chapterItem);
-            }
-            cursor.close();
-        }
 
         return chapterList;
     }

@@ -30,12 +30,11 @@ public class ChapterDbHelper extends SQLiteOpenHelper {
                 " integer primary key autoincrement, " + Chapter.COL_NAME + " varchar(20))");
 
         db.execSQL("create table if not exists " + ChapterItem.TABLE_NAME + "(" + ChapterItem.COL_ID +
-        " integer primary key autoincrement, " + ChapterItem.COL_PID + " integer, " +
+                " integer primary key autoincrement, " + ChapterItem.COL_PID + " integer, " +
                 ChapterItem.COL_NAME + " varchar(20))");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 }
